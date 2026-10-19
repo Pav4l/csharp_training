@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace addressbook_web_tests
+namespace addressbook_web_tests.model
 {
     public class ContactData
     {

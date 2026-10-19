@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebAddressBookTests
+namespace addressbook_web_tests.model
 {
     public class AccountData
     {
