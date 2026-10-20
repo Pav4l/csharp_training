@@ -23,9 +23,19 @@ namespace addressbook_web_tests.appmanager
             manager.Navigator.GoToHomePage();
             return this;
         }
-        public ContactHelper Remove()
+
+        public ContactHelper Modify(ContactData contact, int p)
         {
-            SelectContact();
+            InitContactModification(p);
+            FillContactForm(contact);
+            SubmitContactModification();
+            manager.Navigator.GoToHomePage();
+            return this;
+        }        
+
+        public ContactHelper Remove(int p)
+        {
+            SelectContact(p);
             RemoveContact();
             manager.Navigator.GoToHomePage();
             return this;
@@ -47,9 +57,27 @@ namespace addressbook_web_tests.appmanager
             return this;
         }
 
-        public ContactHelper SelectContact()
+        public ContactHelper SelectContact(int index)
         {
-            driver.FindElement(By.CssSelector("input[type='checkbox'][name='selected[]']")).Click();
+            driver.FindElements(By.CssSelector("input[type='checkbox'][name='selected[]']"))[index].Click();
+            return this;            
+        }
+
+        public ContactHelper SubmitContactModification()
+        {
+            driver.FindElement(By.Name("update")).Click();
+            return this;
+        }
+
+        public ContactHelper InitContactModification(int index)
+        {
+            var editLinks = driver.FindElements(By.CssSelector("a[href^='edit.php?id=']"));
+
+            if (index < 1 || index > editLinks.Count)
+                throw new ArgumentOutOfRangeException(nameof(index),
+                    $"Ссылок редактирования найдено: {editLinks.Count}, запрошен индекс {index}");
+
+            editLinks[index - 1].Click();
             return this;
         }
     }

@@ -14,7 +14,7 @@ namespace addressbook_web_tests.tests
         [Test]
         public void TheUntitledTestCaseTest()
         {
-            app.Contact.Remove();
+            app.Contact.Remove(1);
             app.Quit.Logout();
         }
     }
