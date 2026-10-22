@@ -20,6 +20,7 @@ namespace addressbook_web_tests.appmanager
         {
             manager.Navigator.GoToNewContactPage();
             FillContactForm(contact);
+            SubmitContactCreation();
             manager.Navigator.GoToHomePage();
             return this;
         }
@@ -47,7 +48,6 @@ namespace addressbook_web_tests.appmanager
             driver.FindElement(By.Name("firstname")).SendKeys(contact.Firstname);
             driver.FindElement(By.Name("lastname")).Clear();
             driver.FindElement(By.Name("lastname")).SendKeys(contact.Lastname);
-            driver.FindElement(By.XPath("//div[@id='content']/form/input[20]")).Click();
             return this;
         }
 
@@ -66,6 +66,12 @@ namespace addressbook_web_tests.appmanager
         public ContactHelper SubmitContactModification()
         {
             driver.FindElement(By.Name("update")).Click();
+            return this;
+        }
+
+        public ContactHelper SubmitContactCreation()
+        {
+            driver.FindElement(By.Name("submit")).Click();
             return this;
         }
 
