@@ -44,10 +44,8 @@ namespace addressbook_web_tests.appmanager
 
         public ContactHelper FillContactForm(ContactData contact)
         {
-            driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(contact.Firstname);
-            driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys(contact.Lastname);
+            Type(By.Name("firstname"), contact.Firstname);
+            Type(By.Name("lastname"), contact.Lastname);
             return this;
         }
 
@@ -85,6 +83,12 @@ namespace addressbook_web_tests.appmanager
 
             editLinks[index - 1].Click();
             return this;
+        }
+
+        public int GetContactCount()
+        {
+            manager.Navigator.GoToHomePage();
+            return driver.FindElements(By.CssSelector("input[type='checkbox'][name='selected[]']")).Count;
         }
     }
 }

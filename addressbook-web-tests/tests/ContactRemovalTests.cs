@@ -9,13 +9,14 @@ using System.Threading;
 namespace addressbook_web_tests.tests
 {
     [TestFixture]
-    public class ContactRemovalTest : TestBase
+    public class ContactRemovalTest : AuthTestBase
     {
         [Test]
         public void TheUntitledTestCaseTest()
         {
-            app.Contact.Remove(1);
-            app.Quit.Logout();
+            EnsureContactExists();
+            app.Contact.Remove(0);
+            //app.Quit.Logout();
         }
     }
 }

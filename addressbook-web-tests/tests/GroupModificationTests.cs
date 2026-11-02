@@ -8,18 +8,19 @@ using System.Threading.Tasks;
 namespace addressbook_web_tests.tests
 {
     [TestFixture]
-    public class GroupModificationTests : TestBase
+    public class GroupModificationTests : AuthTestBase
     {
 
         [Test]
         public void GroupModificationTest()
         {
+            EnsureGroupExists();
             GroupData newData = new GroupData("zzz");
             newData.Header = "ttt";
             newData.Footer = "qqq";
 
             app.Group.Modify(1, newData);
-            app.Quit.Logout();
+            //app.Quit.Logout();
         }
     }
 }

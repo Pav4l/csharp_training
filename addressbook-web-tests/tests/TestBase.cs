@@ -14,17 +14,39 @@ namespace addressbook_web_tests.tests
         protected ApplicationManager app;
 
         [SetUp]
-        public void SetupTest()
+        public void SetupApplicationManager()
         {
-            app = new ApplicationManager();
-            app.Navigator.GoToHomePage();
-            app.Auth.Login(new AccountData("admin", "secret"));
+            app = ApplicationManager.GetInstance();
         }
 
-        [TearDown]
-        public void TeardownTest()
+        public void EnsureGroupExists()
         {
-            app.Stop();
+            if (app.Group.GetGroupCount() == 0)
+            {
+                GroupData group = new GroupData("default");
+                group.Header = "default";
+                group.Footer = "default";
+                app.Group.Create(group);
+            }
+        }
+
+        public void EnsureContactExists()
+        {
+            if (app.Contact.GetContactCount() == 0)
+            {
+                ContactData contact = new ContactData("Default", "Contact");
+                app.Contact.Create(contact);
+            }
+        }
+
+        [SetUpFixture]
+        public class GlobalTeardown
+        {
+            [TearDown] // закрытие браузера после всех тестов
+            public void RunOnceAfterAllTests()
+            {
+                ApplicationManager.StopCurrentThread();
+            }
         }
     }
 }

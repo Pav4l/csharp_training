@@ -8,14 +8,14 @@ using System.Threading;
 namespace addressbook_web_tests.tests
 {
     [TestFixture]
-    public class ContactCreationTests : TestBase
+    public class ContactCreationTests : AuthTestBase
     {
         [Test]
         public void ContactCreationTest()
         {
             ContactData contact = new ContactData("Petr", "Petrov");
             app.Contact.Create(contact);
-            app.Quit.Logout();
+            //app.Quit.Logout();
         }
     }
 }
