@@ -19,8 +19,16 @@ namespace addressbook_web_tests.tests
             newData.Header = "ttt";
             newData.Footer = "qqq";
 
-            app.Group.Modify(1, newData);
+            List<GroupData> oldGroups = app.Group.GetGroupList();
+
+            app.Group.Modify(0, newData);
             //app.Quit.Logout();
+
+            List<GroupData> newGroups = app.Group.GetGroupList();
+            oldGroups[0].Name = newData.Name;
+            oldGroups.Sort();
+            newGroups.Sort();
+            Assert.AreEqual(oldGroups, newGroups);
         }
     }
 }

@@ -15,8 +15,18 @@ namespace addressbook_web_tests.tests
         {
             EnsureContactExists();
             ContactData contact = new ContactData("Sidr", "Sidorov");
+
+            List<ContactData> oldContacts = app.Contact.GetContactList();
+
             app.Contact.Modify(contact,1);
             //app.Quit.Logout();
+
+            List<ContactData> newContacts = app.Contact.GetContactList();
+            oldContacts[0].Firstname = contact.Firstname;
+            oldContacts[0].Lastname = contact.Lastname;
+            oldContacts.Sort();
+            newContacts.Sort();
+            Assert.AreEqual(oldContacts, newContacts);
         }
     }
 }

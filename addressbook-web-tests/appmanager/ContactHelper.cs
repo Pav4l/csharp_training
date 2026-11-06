@@ -57,7 +57,7 @@ namespace addressbook_web_tests.appmanager
 
         public ContactHelper SelectContact(int index)
         {
-            driver.FindElements(By.CssSelector("input[type='checkbox'][name='selected[]']"))[index].Click();
+            driver.FindElements(By.CssSelector("input[type='checkbox'][name='selected[]']"))[index-1].Click();
             return this;            
         }
 
@@ -89,6 +89,20 @@ namespace addressbook_web_tests.appmanager
         {
             manager.Navigator.GoToHomePage();
             return driver.FindElements(By.CssSelector("input[type='checkbox'][name='selected[]']")).Count;
+        }
+
+        public List<ContactData> GetContactList()
+        {
+            List<ContactData> contacts = new List<ContactData>();
+            manager.Navigator.GoToHomePage();
+
+            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("tr[name=entry]"));
+            foreach (IWebElement element in elements)
+            {
+                IList<IWebElement> cells = element.FindElements(By.TagName("td"));
+                contacts.Add(new ContactData(cells[2].Text, cells[1].Text));
+            }
+            return contacts;
         }
     }
 }
