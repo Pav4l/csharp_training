@@ -21,10 +21,20 @@ namespace addressbook_web_tests.tests
             app.Contact.Remove(1);
             //app.Quit.Logout();
 
+            Assert.AreEqual(oldContacts.Count - 1, app.Contact.GetContactCount());
+
             List<ContactData> newContacts = app.Contact.GetContactList();
 
+            ContactData toBeRemoved = oldContacts[0];
             oldContacts.RemoveAt(0);
+            oldContacts.Sort();
+            newContacts.Sort();
             Assert.AreEqual(oldContacts, newContacts);
+
+            foreach (ContactData contact in newContacts)
+            {
+                Assert.AreNotEqual(contact.Id, toBeRemoved.Id);
+            }
         }
     }
 }
