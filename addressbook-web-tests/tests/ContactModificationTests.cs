@@ -19,12 +19,14 @@ namespace addressbook_web_tests.tests
             List<ContactData> oldContacts = app.Contact.GetContactList();
             ContactData oldData = oldContacts[0];
 
-            app.Contact.Modify(newData, 1);
+            app.Contact.Modify(newData, 0);
             //app.Quit.Logout();
 
             Assert.AreEqual(oldContacts.Count, app.Contact.GetContactCount());
 
             List<ContactData> newContacts = app.Contact.GetContactList();
+ 
+            ContactData toUpdate = oldContacts.Find(c => c.Id == oldData.Id);
             oldContacts[0].Firstname = newData.Firstname;
             oldContacts[0].Lastname = newData.Lastname;
             oldContacts.Sort();

@@ -34,9 +34,16 @@ namespace addressbook_web_tests.appmanager
 
         public void Logout()
         {
+            /*
             if (IsLoggedIn())
             {
                 driver.FindElement(By.LinkText("Logout")).Click();
+            }*/
+            if (IsElementPresent(By.LinkText("Logout")))
+            {
+                driver.FindElement(By.LinkText("Logout")).Click();
+                new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+                    .Until(d => d.FindElement(By.Name("user")));
             }
         }        
 
@@ -48,7 +55,14 @@ namespace addressbook_web_tests.appmanager
         public bool IsLoggedIn(AccountData account)
         {
             return IsLoggedIn()
-                && driver.FindElement(By.Name("logout")).FindElement(By.TagName("b")).Text == "(" + account.Username + ")";
+                && GetLoggetUserName() == account.Username;
+                
+        }
+
+        public string GetLoggetUserName()
+        {
+            string text = driver.FindElement(By.Name("logout")).FindElement(By.TagName("b")).Text;
+            return text.Substring(1, text.Length - 2);
         }
     }
 }
