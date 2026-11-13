@@ -172,5 +172,14 @@ namespace addressbook_web_tests.appmanager
             Match m = new Regex(@"\d+").Match(text);
             return Int32.Parse(m.Value);
         }
+
+        public string GetContactInformationFromDetailsPage(int index)
+        {
+            manager.Navigator.GoToHomePage();
+            driver.FindElements(By.Name("entry"))[index]
+                .FindElement(By.CssSelector("a[href^='view.php?id=']"))
+                .Click();
+            return driver.FindElement(By.CssSelector("div#content")).Text;
+        }
     }
 }
