@@ -1,6 +1,7 @@
 ﻿using addressbook_web_tests;
 using addressbook_web_tests.appmanager;
 using addressbook_web_tests.model;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace addressbook_web_tests.tests
         public void SetupApplicationManager()
         {
             app = ApplicationManager.GetInstance();
-        }
+        }      
 
         public void EnsureGroupExists()
         {
@@ -47,6 +48,20 @@ namespace addressbook_web_tests.tests
             {
                 ApplicationManager.StopCurrentThread();
             }
+        }
+
+        public static Random rnd = new Random();
+        private const string SafeChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        public static string GenerateRandomString(int max)
+        {
+            int l = Convert.ToInt32(rnd.NextDouble() * max);
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < l; i++)
+            {
+                //builder.Append(Convert.ToChar(32 + Convert.ToInt32(rnd.NextDouble() * 223)));
+                builder.Append(SafeChars[rnd.Next(SafeChars.Length)]);
+            }
+            return builder.ToString();
         }
     }
 }

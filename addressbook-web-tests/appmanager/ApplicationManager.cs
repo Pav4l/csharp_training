@@ -29,6 +29,8 @@ namespace addressbook_web_tests.appmanager
             driver = new FirefoxDriver(service);
             baseURL = "http://localhost/addressbook";
 
+            driver.Manage().Window.Maximize();
+
             loginHelper = new LoginHelper(this);
             contactHelper = new ContactHelper(this);
             navigationHelper = new NavigationHelper(this, baseURL);

@@ -1,13 +1,14 @@
 ﻿using addressbook_web_tests.model;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace addressbook_web_tests.appmanager
 {
@@ -47,6 +48,18 @@ namespace addressbook_web_tests.appmanager
         {
             Type(By.Name("firstname"), contact.Firstname);
             Type(By.Name("lastname"), contact.Lastname);
+            /*if (contact.Address != null)
+                Type(By.Name("address"), contact.Address);
+
+            if (contact.HomePhone != null)
+                Type(By.Name("home"), contact.HomePhone);
+
+            if (contact.MobilePhone != null)
+                Type(By.Name("mobile"), contact.MobilePhone);
+
+            if (contact.WorkPhone != null)
+                Type(By.Name("work"), contact.WorkPhone);
+            */
             return this;
         }
 
@@ -87,13 +100,14 @@ namespace addressbook_web_tests.appmanager
             return this;
         }
 
-        /*
+       /*
         public void InitContactModification(int index)
         {
             driver.FindElements(By.Name("entry"))[index]
                 .FindElements(By.TagName("td"))[7]
                 .FindElement(By.TagName("a")).Click();
-        }*/
+        }
+       */      
 
         public int GetContactCount()
         {
@@ -181,5 +195,19 @@ namespace addressbook_web_tests.appmanager
                 .Click();
             return driver.FindElement(By.CssSelector("div#content")).Text;
         }
+
+        //удаление всех контактов
+        /*public ContactHelper DeleteAllContacts()
+        {
+            manager.Navigator.GoToHomePage();
+            var all = driver.FindElements(By.CssSelector("input[type='checkbox'][name='selected[]']"));
+            foreach (var cb in all)
+            {
+                if (!cb.Selected) cb.Click();
+            }
+            driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
+            try { driver.SwitchTo().Alert().Accept(); } catch (NoAlertPresentException) { }
+            return this;
+        }*/
     }
 }

@@ -7,27 +7,40 @@ using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace addressbook_web_tests.tests
-{
+{    
     [TestFixture]
     public class ContactCreationTests : AuthTestBase
     {
-        [Test]
-        public void ContactCreationTest()
+        public static IEnumerable<ContactData> RandomContactDataProvider()
         {
-            ContactData contact = new ContactData("Petr", "Petrov");
+            List<ContactData> contacts = new List<ContactData>();
+            for (int i = 0; i < 5; i++)
+            {
+                contacts.Add(new ContactData(GenerateRandomString(30), GenerateRandomString(30))
+                {
+                    Address = GenerateRandomString(100),
+                    HomePhone = GenerateRandomString(20),
+                    MobilePhone = GenerateRandomString(20),
+                    WorkPhone = GenerateRandomString(20)
+                });
+            }
+            return contacts;
+        }
 
+        [Test, TestCaseSource(nameof(RandomContactDataProvider))]
+        public void ContactCreationTest(ContactData contact)
+        {
             List<ContactData> oldContacts = app.Contact.GetContactList();
 
             app.Contact.Create(contact);
-            //app.Quit.Logout();
 
             Assert.AreEqual(oldContacts.Count + 1, app.Contact.GetContactCount());
 
-            List<ContactData> newGroups = app.Contact.GetContactList();
+            List<ContactData> newContacts = app.Contact.GetContactList();
             oldContacts.Add(contact);
             oldContacts.Sort();
-            newGroups.Sort();
-            Assert.AreEqual(oldContacts, newGroups);
+            newContacts.Sort();
+            Assert.AreEqual(oldContacts, newContacts);
         }
     }
 }

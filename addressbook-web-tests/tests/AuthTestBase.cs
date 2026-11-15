@@ -14,8 +14,6 @@ namespace addressbook_web_tests.tests
         public void SetupLogin()
         {
             app.Auth.Login(new AccountData("admin", "secret"));
-
         }
-
     }
 }
