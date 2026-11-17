@@ -30,26 +30,34 @@ namespace addressbook_web_tests.tests
             EnsureContactExists();
 
             ContactData fromForm = app.Contact.GetContactInformationEditForm(0);
-            string fromDetails = app.Contact.GetContactInformationFromDetailsPage(0);
+            string[] fromDetails = app.Contact.GetContactInformationFromDetailsPage(0)
+                .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(l => l.Trim())
+                .ToArray();
 
-            // Каждое значение из формы редактирования должно присутствовать в тексте страницы деталей
-            if (!string.IsNullOrEmpty(fromForm.Firstname))
-                StringAssert.Contains(fromForm.Firstname, fromDetails);
+            // Ожидаемые поля в правильном порядке; пустые — пропускаем
+            var expected = new[]
+            {
+                $"{fromForm.Firstname} {fromForm.Lastname}".Trim(),
+                fromForm.Address,
+                fromForm.HomePhone,
+                fromForm.MobilePhone,
+                fromForm.WorkPhone
+            }.Where(s => !string.IsNullOrEmpty(s));
 
-            if (!string.IsNullOrEmpty(fromForm.Lastname))
-                StringAssert.Contains(fromForm.Lastname, fromDetails);
+            // Каждое значение — отдельной строкой, в правильном порядке
+            int lastIdx = -1;
+            foreach (var value in expected)
+            {
+                int idx = Array.FindIndex(fromDetails, lastIdx + 1,
+                    line => line == value || line.EndsWith(value));
 
-            if (!string.IsNullOrEmpty(fromForm.Address))
-                StringAssert.Contains(fromForm.Address, fromDetails);
+                Assert.IsTrue(idx > lastIdx,
+                    $"'{value}' не найдено в правильном порядке.\n" +
+                    $"Строки деталей:\n  {string.Join("\n  ", fromDetails)}");
 
-            if (!string.IsNullOrEmpty(fromForm.HomePhone))
-                StringAssert.Contains(fromForm.HomePhone, fromDetails);
-
-            if (!string.IsNullOrEmpty(fromForm.MobilePhone))
-                StringAssert.Contains(fromForm.MobilePhone, fromDetails);
-
-            if (!string.IsNullOrEmpty(fromForm.WorkPhone))
-                StringAssert.Contains(fromForm.WorkPhone, fromDetails);
+                lastIdx = idx;
+            }
         }
     }
 }
